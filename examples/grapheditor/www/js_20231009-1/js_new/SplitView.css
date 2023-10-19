@@ -1,0 +1,41 @@
+.gutter {
+  background-color: #eee;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  flex: none;
+}
+ 
+.split-view {
+  display: flex;
+}
+ 
+.split-view.vertical {
+  flex-direction: column;
+}
+ 
+.split-view.horizontal {
+  flex-direction: row;
+}
+ 
+.split-view>*:not(.gutter){
+  flex-grow: 1;
+  overflow: auto;
+}
+ 
+.split-view>.gutter {
+  background-color: #eee;
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
+ 
+.split-view.horizontal>.gutter {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+  cursor: col-resize;
+  width: 10px;
+}
+ 
+.split-view.vertical>.gutter {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=');
+  cursor: row-resize;
+  height: 10px;
+}

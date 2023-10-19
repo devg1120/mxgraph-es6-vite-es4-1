@@ -1,0 +1,669 @@
+commit 97de1546cb7b21a793021a57724199c224d40649
+Author: vboxuser <vboxuser@ubuntu-server-01.myguest.virtualbox.org>
+Date:   Thu Oct 19 17:14:39 2023 +0900
+
+    format view
+
+diff --git a/examples/grapheditor/www/js/Editor.js b/examples/grapheditor/www/js/Editor.js
+index cef8009..67ee11e 100644
+--- a/examples/grapheditor/www/js/Editor.js
++++ b/examples/grapheditor/www/js/Editor.js
+@@ -12,8 +12,10 @@ import AnimatedScroll from "./AnimatedScroll.js";
+ //var IMAGE_PATH = "images";
+ 
+ export class Editor extends m.mxEventSource {
++  //constructor(editorUi,chromeless, themes, model, graph, editable) {
+   constructor(chromeless, themes, model, graph, editable) {
+     super();
++    //this.editorUi = editorUi;
+     this.chromeless = chromeless != null ? chromeless : this.chromeless;
+     this.initStencilRegistry();
+     this.graph = graph || this.createGraph(themes, model);
+@@ -35,6 +37,10 @@ export class Editor extends m.mxEventSource {
+     this.graph.resetViewOnRootChange = false;
+     this.init();
+   }
++  setui(ui) {
++	  console.log("setui", ui);
++      this.ui = ui;
++  }
+ 
+   getOrCreateFilename() {
+     return (
+@@ -2562,8 +2568,18 @@ FilenameDialog.createFileTypes = function (editorUi, nameInput, types) {
+ 
+     /* GS */
+     //var scroll = new AnimatedScroll(graph.container);
++/*
++    canvas.addEventListener("mouseenter", (event) => {
++	    console.log("mouseenter", this.graph.name);
++
++    });
++    canvas.addEventListener("mouseleave", (event) => {
++	    console.log("mouseleave", this.graph.name);
+ 
+-    canvas.addEventListener("mousedown", (event) => {
++    });
++*/
++    let that = this;
++    canvas.addEventListener("mousedown", (event, that) => {
+       if (EditorUi.mode_pan) {
+         this.canvas_mousedown = true;
+         this._startY = event.pageY - graph.container.offsetTop;
+@@ -2573,6 +2589,12 @@ FilenameDialog.createFileTypes = function (editorUi, nameInput, types) {
+         //event.stopImmediatePropagation();
+         event.preventDefault();
+         event.stopPropagation();
++      } else {
++
++	    //console.log("mousedown", this.graph.name, that.ui);
++	    //this.ui.set_activeGraph(this.graph);
++	    // this.graph.mouse_down();
++
+       }
+     });
+ 
+diff --git a/examples/grapheditor/www/js/EditorUi.js b/examples/grapheditor/www/js/EditorUi.js
+index b24929b..6d01af4 100644
+--- a/examples/grapheditor/www/js/EditorUi.js
++++ b/examples/grapheditor/www/js/EditorUi.js
+@@ -37,11 +37,12 @@ export class EditorUi extends m.mxEventSource {
+     //this.mode_pan    = false;
+     //	 m.mxUtils.gtest("gtest TEST OK");
+     this.destroyFunctions = [];
++    //this.editor = editor || new Editor(this);
+     this.editor = editor || new Editor();
+     window.parent.Editor = this.editor; /* GS-PD */
+     window.parent.mxResources = m.mxResources; /* GS-PD */
+     window.parent.Graph = this.editor.graph; /* GS-PD */
+-
++    this.editor.graph.setui(this);
+     this.container = container || document.body;
+ 
+     var graph = this.editor.graph;
+@@ -1064,6 +1065,12 @@ export class EditorUi extends m.mxEventSource {
+   } // end constructor
+ 
+ /*****************************************************************/
++
++set_activeGraph(graph) {
++  this.activeGraph = graph;
++
++}
++
+ graph_init(graph) {
+ 
+ 
+@@ -4997,12 +5004,14 @@ EditorUi.prototype.createUi = function () {
+   let lightbox = this.editor.graph.lightbox;
+   var con = document.getElementById("split2");    // GS
+   this.editor2 = new Editor(                      // GS
++//	  this,
+     this.editor.chromeless,
+     themes,
+     model,
+     null,
+     this.editor.editable,
+   ); 
++  this.editor2.graph.setui(this);
+   var graph2 = this.editor2.graph;
+   graph2.lightbox = lightbox;
+   graph2.name = "G2";
+diff --git a/examples/grapheditor/www/js/Format.js b/examples/grapheditor/www/js/Format.js
+index b0672c7..1fc6d90 100644
+--- a/examples/grapheditor/www/js/Format.js
++++ b/examples/grapheditor/www/js/Format.js
+@@ -150,7 +150,16 @@ Format.prototype.getSelectionState = function () {
+  */
+ Format.prototype.createSelectionState = function () {
+ 
+-  var cells = this.editorUi.editor.graph.getSelectionCells();
++  //var cells = this.editorUi.editor.graph.getSelectionCells();
++
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
++
++  var cells =graph.getSelectionCells();
++
++
+   var result = this.initSelectionState();
+ 
+   for (var i = 0; i < cells.length; i++) {
+@@ -195,7 +204,12 @@ Format.prototype.initSelectionState = function () {
+  * Returns information about the current selection.
+  */
+ Format.prototype.updateSelectionStateForCell = function (result, cell, cells) {
+-  var graph = this.editorUi.editor.graph;
++  //var graph = this.editorUi.editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
++
+ 
+   if (graph.getModel().isVertex(cell)) {
+     result.resizable = result.resizable && graph.isCellResizable(cell);
+@@ -469,7 +483,7 @@ Format.prototype.refresh = function () {
+       if (currentLabel != elt) {
+         if (containsLabel) {
+           this.labelIndex = index;
+-        } else if (graph.isSelectionEmpty()) {
++        } else if (graph.isSelectionEmpty() && graph2.isSelectionEmpty()) {
+           this.diagramIndex = index;
+         } else {
+           this.currentIndex = index;
+@@ -520,7 +534,7 @@ Format.prototype.refresh = function () {
+   });
+ 
+   var idx = 0;
+-
++  var active_graph = this.editorUi.activeGraph;
+   // GS  if (graph.isSelectionEmpty()) {
+   if (graph.isSelectionEmpty() && graph2.isSelectionEmpty()) { // GS
+     m.mxUtils.write(label, m.mxResources.get("diagram"));
+@@ -668,7 +682,8 @@ BaseFormatPanel.prototype.buttonBackgroundColor = "white";
+  * Adds the given color option.
+  */
+ BaseFormatPanel.prototype.getSelectionState = function () {
+-  var graph = this.editorUi.editor.graph;
++  //var graph = this.editorUi.editor.graph;
++  var graph = this.editorUi.activeGraph;  // GS
+   var cells = graph.getSelectionCells();
+   var shape = null;
+ 
+@@ -712,7 +727,11 @@ BaseFormatPanel.prototype.installInputHandler = function (
+   isFloat = isFloat != null ? isFloat : false;
+ 
+   var ui = this.editorUi;
+-  var graph = ui.editor.graph;
++  //var graph = ui.editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+ 
+   min = min != null ? min : 1;
+   max = max != null ? max : 999;
+@@ -1064,8 +1083,13 @@ BaseFormatPanel.prototype.createCellOption = function (
+       : "0";
+ 
+   var ui = this.editorUi;
+-  var editor = ui.editor;
+-  var graph = editor.graph;
++  //var editor = ui.editor;
++  //var graph = editor.graph;
++
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+ 
+   return this.createOption(
+     label,
+@@ -1282,8 +1306,12 @@ BaseFormatPanel.prototype.createCellColorOption = function (
+   setStyleFn,
+ ) {
+   var ui = this.editorUi;
+-  var editor = ui.editor;
+-  var graph = editor.graph;
++  //var editor = ui.editor;
++  //var graph = editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+ 
+   return this.createColorOption(
+     label,
+@@ -1463,7 +1491,14 @@ BaseFormatPanel.prototype.createRelativeOption = function (
+ ) {
+   width = width != null ? width : 44;
+ 
+-  var graph = this.editorUi.editor.graph;
++  //var graph = this.editorUi.editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
++
++
++
+   var div = this.createPanel();
+   div.style.paddingTop = "10px";
+   div.style.paddingBottom = "10px";
+@@ -1698,7 +1733,15 @@ ArrangePanel.prototype.init = function () {
+ ArrangePanel.prototype.addTable = function (div) {
+   var ui = this.editorUi;
+   var editor = ui.editor;
+-  var graph = editor.graph;
++  //var graph = editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
++
++
++
++
+   var ss = this.format.getSelectionState();
+   div.style.paddingTop = "6px";
+   div.style.paddingBottom = "10px";
+@@ -1840,7 +1883,14 @@ ArrangePanel.prototype.addLayerOps = function (div) {
+  */
+ ArrangePanel.prototype.addGroupOps = function (div) {
+   var ui = this.editorUi;
+-  var graph = ui.editor.graph;
++  //var graph = ui.editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
++
++
++
+   var cell = graph.getSelectionCell();
+   var ss = this.format.getSelectionState();
+   var count = 0;
+@@ -2039,7 +2089,11 @@ ArrangePanel.prototype.addGroupOps = function (div) {
+  *
+  */
+ ArrangePanel.prototype.addAlign = function (div) {
+-  var graph = this.editorUi.editor.graph;
++  //var graph = this.editorUi.editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+   div.style.paddingTop = "6px";
+   div.style.paddingBottom = "12px";
+   div.appendChild(this.createTitle(m.mxResources.get("align")));
+@@ -2117,7 +2171,11 @@ ArrangePanel.prototype.addAlign = function (div) {
+ ArrangePanel.prototype.addFlip = function (div) {
+   var ui = this.editorUi;
+   var editor = ui.editor;
+-  var graph = editor.graph;
++  //var graph = editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+   div.style.paddingTop = "6px";
+   div.style.paddingBottom = "10px";
+ 
+@@ -2154,7 +2212,11 @@ ArrangePanel.prototype.addFlip = function (div) {
+ ArrangePanel.prototype.addDistribute = function (div) {
+   var ui = this.editorUi;
+   var editor = ui.editor;
+-  var graph = editor.graph;
++  //var graph = editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+   div.style.paddingTop = "6px";
+   div.style.paddingBottom = "12px";
+ 
+@@ -2186,7 +2248,11 @@ ArrangePanel.prototype.addDistribute = function (div) {
+ ArrangePanel.prototype.addAngle = function (div) {
+   var ui = this.editorUi;
+   var editor = ui.editor;
+-  var graph = editor.graph;
++  //var graph = editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+   var ss = this.format.getSelectionState();
+ 
+   div.style.paddingBottom = "8px";
+@@ -2328,7 +2394,11 @@ BaseFormatPanel.prototype.getUnitStep = function () {
+ ArrangePanel.prototype.addGeometry = function (container) {
+   var panel = this;
+   var ui = this.editorUi;
+-  var graph = ui.editor.graph;
++  //var graph = ui.editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+   var rect = this.format.getSelectionState();
+ 
+   var div = this.createPanel();
+@@ -2606,7 +2676,11 @@ ArrangePanel.prototype.addGeometry = function (container) {
+  */
+ ArrangePanel.prototype.addGeometryHandler = function (input, fn) {
+   var ui = this.editorUi;
+-  var graph = ui.editor.graph;
++  //var graph = ui.editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+   var initialValue = null;
+   var panel = this;
+ 
+@@ -2664,7 +2738,11 @@ ArrangePanel.prototype.addGeometryHandler = function (input, fn) {
+ 
+ ArrangePanel.prototype.addEdgeGeometryHandler = function (input, fn) {
+   var ui = this.editorUi;
+-  var graph = ui.editor.graph;
++  //var graph = ui.editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+   var initialValue = null;
+ 
+   function update(evt) {
+@@ -2716,7 +2794,11 @@ ArrangePanel.prototype.addEdgeGeometryHandler = function (input, fn) {
+  */
+ ArrangePanel.prototype.addEdgeGeometry = function (container) {
+   var ui = this.editorUi;
+-  var graph = ui.editor.graph;
++  //var graph = ui.editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+   var rect = this.format.getSelectionState();
+ 
+   var div = this.createPanel();
+@@ -2929,7 +3011,11 @@ TextFormatPanel.prototype.init = function () {
+ TextFormatPanel.prototype.addFont = function (container) {
+   var ui = this.editorUi;
+   var editor = ui.editor;
+-  var graph = editor.graph;
++  //var graph = editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+   var ss = this.format.getSelectionState();
+ 
+   var title = this.createTitle(m.mxResources.get("font"));
+@@ -4844,7 +4930,11 @@ StyleFormatPanel.prototype.defaultStrokeColor = "black";
+ StyleFormatPanel.prototype.init = function () {
+   var ui = this.editorUi;
+   var editor = ui.editor;
+-  var graph = editor.graph;
++  //var graph = editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+   var ss = this.format.getSelectionState();
+ 
+   if (!ss.containsLabel) {
+@@ -4902,7 +4992,11 @@ StyleFormatPanel.prototype.getCssRules = function (css) {
+  */
+ StyleFormatPanel.prototype.addSvgStyles = function (container) {
+   var ui = this.editorUi;
+-  var graph = ui.editor.graph;
++  //var graph = ui.editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+   var ss = this.format.getSelectionState();
+   container.style.paddingTop = "6px";
+   container.style.paddingBottom = "6px";
+@@ -4959,7 +5053,11 @@ StyleFormatPanel.prototype.addSvgRule = function (
+   regex,
+ ) {
+   var ui = this.editorUi;
+-  var graph = ui.editor.graph;
++  //var graph = ui.editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+ 
+   if (regex.test(rule.selectorText)) {
+     function rgb2hex(rgb) {
+@@ -5033,7 +5131,12 @@ StyleFormatPanel.prototype.addEditOps = function (div) {
+   var ss = this.format.getSelectionState();
+   var btn = null;
+ 
+-  if (this.editorUi.editor.graph.getSelectionCount() == 1) {
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
++  //if (this.editorUi.editor.graph.getSelectionCount() == 1) {
++  if (graph.getSelectionCount() == 1) {
+     btn = m.mxUtils.button(
+       m.mxResources.get("editStyle"),
+       m.mxUtils.bind(this, function (evt) {
+@@ -5084,7 +5187,11 @@ StyleFormatPanel.prototype.addEditOps = function (div) {
+  */
+ StyleFormatPanel.prototype.addFill = function (container) {
+   var ui = this.editorUi;
+-  var graph = ui.editor.graph;
++  //var graph = ui.editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+   var ss = this.format.getSelectionState();
+   container.style.paddingTop = "6px";
+   container.style.paddingBottom = "6px";
+@@ -5300,7 +5407,11 @@ StyleFormatPanel.prototype.getCustomColors = function () {
+  */
+ StyleFormatPanel.prototype.addStroke = function (container) {
+   var ui = this.editorUi;
+-  var graph = ui.editor.graph;
++  //var graph = ui.editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+   var ss = this.format.getSelectionState();
+ 
+   container.style.paddingTop = "4px";
+@@ -6975,7 +7086,11 @@ StyleFormatPanel.prototype.addLineJumps = function (container) {
+ 
+     var ui = this.editorUi;
+     var editor = ui.editor;
+-    var graph = editor.graph;
++    //var graph = editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+ 
+     var span = document.createElement("div");
+     span.style.position = "absolute";
+@@ -7082,7 +7197,11 @@ StyleFormatPanel.prototype.addLineJumps = function (container) {
+ StyleFormatPanel.prototype.addEffects = function (div) {
+   var ui = this.editorUi;
+   var editor = ui.editor;
+-  var graph = editor.graph;
++  //var graph = editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+   var ss = this.format.getSelectionState();
+ 
+   div.style.paddingTop = "0px";
+@@ -7213,7 +7332,11 @@ export class DiagramStylePanel extends BaseFormatPanel {
+ DiagramStylePanel.prototype.init = function () {
+   var ui = this.editorUi;
+   var editor = ui.editor;
+-  var graph = editor.graph;
++  //var graph = editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+ 
+   this.container.appendChild(this.addView(this.createPanel()));
+ };
+@@ -7224,7 +7347,11 @@ DiagramStylePanel.prototype.init = function () {
+ DiagramStylePanel.prototype.addView = function (div) {
+   var ui = this.editorUi;
+   var editor = ui.editor;
+-  var graph = editor.graph;
++  //var graph = editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+   var model = graph.getModel();
+ 
+   div.style.whiteSpace = "normal";
+@@ -7879,7 +8006,11 @@ DiagramFormatPanel.prototype.showBackgroundImageOption = true;
+ DiagramFormatPanel.prototype.init = function () {
+   var ui = this.editorUi;
+   var editor = ui.editor;
+-  var graph = editor.graph;
++  //var graph = editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+ 
+   this.container.appendChild(this.addView(this.createPanel()));
+ 
+@@ -7896,7 +8027,11 @@ DiagramFormatPanel.prototype.init = function () {
+ DiagramFormatPanel.prototype.addView = function (div) {
+   var ui = this.editorUi;
+   var editor = ui.editor;
+-  var graph = editor.graph;
++  //var graph = editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+ 
+   div.appendChild(this.createTitle(m.mxResources.get("view")));
+ 
+@@ -7988,7 +8123,11 @@ DiagramFormatPanel.prototype.addView = function (div) {
+ DiagramFormatPanel.prototype.addOptions = function (div) {
+   var ui = this.editorUi;
+   var editor = ui.editor;
+-  var graph = editor.graph;
++  //var graph = editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+ 
+   div.appendChild(this.createTitle(m.mxResources.get("options")));
+ 
+@@ -8078,7 +8217,11 @@ DiagramFormatPanel.prototype.addOptions = function (div) {
+ DiagramFormatPanel.prototype.addGridOption = function (container) {
+   var fPanel = this;
+   var ui = this.editorUi;
+-  var graph = ui.editor.graph;
++  //var graph = ui.editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+ 
+   var input = document.createElement("input");
+   input.style.position = "absolute";
+@@ -8240,7 +8383,11 @@ DiagramFormatPanel.prototype.addDocumentProperties = function (div) {
+   // Hook for subclassers
+   var ui = this.editorUi;
+   var editor = ui.editor;
+-  var graph = editor.graph;
++  //var graph = editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+ 
+   div.appendChild(this.createTitle(m.mxResources.get("options")));
+ 
+@@ -8253,7 +8400,11 @@ DiagramFormatPanel.prototype.addDocumentProperties = function (div) {
+ DiagramFormatPanel.prototype.addPaperSize = function (div) {
+   var ui = this.editorUi;
+   var editor = ui.editor;
+-  var graph = editor.graph;
++  //var graph = editor.graph;
++  var graph =  this.editorUi.activeGraph;
++  if (graph == null) {
++       graph = this.editorUi.editor.graph;
++  }
+ 
+   div.appendChild(this.createTitle(m.mxResources.get("paperSize")));
+ 
+diff --git a/examples/grapheditor/www/js/Graph.js b/examples/grapheditor/www/js/Graph.js
+index 1c082b4..bacaa87 100644
+--- a/examples/grapheditor/www/js/Graph.js
++++ b/examples/grapheditor/www/js/Graph.js
+@@ -536,7 +536,9 @@ export class Graph extends m.mxGraph {
+       var mouseDown = null;
+ 
+       this.addMouseListener({
+-        mouseDown: function (sender, me) {},
++        mouseDown: function (sender, me) {
++                console.log("MD");
++	},
+         mouseMove: m.mxUtils.bind(this, function (sender, me) {
+           // Checks if any other handler is active
+           var handlerMap = this.selectionCellsHandler.handlers.map;
+@@ -909,6 +911,14 @@ export class Graph extends m.mxGraph {
+       });
+     } // end constructor
+   }
++ setui(ui) {  // from EditoeUi.js
++	 this.ui = ui;
++ }
++
++ mouse_down() {   // from Editor.js
++      console.log("mouse_down",   this.name);
++
++ }
+   /**
+    * Helper function for creating SVG data URI.
+    */
+@@ -1609,6 +1619,7 @@ export class Graph extends m.mxGraph {
+         m.mxEvent.FIRE_MOUSE_EVENT,
+         m.mxUtils.bind(this, function (sender, evt) {
+           if (evt.getProperty("eventName") == "mouseDown") {
++            this.ui.set_activeGraph(this);
+             var me = evt.getProperty("event");
+             var state = me.getState();
+ 
+diff --git a/examples/grapheditor/www/js/Menus.js b/examples/grapheditor/www/js/Menus.js
+index d8a0563..c52d47c 100644
+--- a/examples/grapheditor/www/js/Menus.js
++++ b/examples/grapheditor/www/js/Menus.js
+@@ -1556,6 +1556,7 @@ Menus.prototype.addPopupMenuStyleItems = function (menu, cell, evt) {
+  * Creates the keyboard event handler for the current graph and history.
+  */
+ Menus.prototype.addPopupMenuArrangeItems = function (menu, cell, evt) {
++/*
+   var graph = this.editorUi.editor.graph;
+   var graph2 = this.editorUi.editor2.graph;
+ 
+@@ -1573,6 +1574,24 @@ Menus.prototype.addPopupMenuArrangeItems = function (menu, cell, evt) {
+   ) {
+     this.addMenuItems(menu, ["-", "ungroup"], null, evt);
+   }
++*/
++  var graph = this.editorUi.activeGraph;
++
++  if (!graph.isSelectionEmpty() ) {
++    this.addMenuItems(menu, ["-", "toFront", "toBack"], null, evt);
++  }
++
++  if (graph.getSelectionCount() > 1 ) {
++    this.addMenuItems(menu, ["-", "group"], null, evt);
++  } else if (
++    graph.getSelectionCount() == 1 &&
++    !graph.getModel().isEdge(cell) &&
++   !graph.isSwimlane(cell) &&
++    graph.getModel().getChildCount(cell) > 0
++  ) {
++    this.addMenuItems(menu, ["-", "ungroup"], null, evt);
++  }
++
+ };
+ 
+ /**

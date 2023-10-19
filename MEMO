@@ -1,0 +1,4 @@
+ git log -p -1 > GIT_LOG
+
+
+
