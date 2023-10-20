@@ -1609,19 +1609,25 @@ BaseFormatPanel.prototype.addLabel = function (div, title, right, width) {
  *
  */
 BaseFormatPanel.prototype.addKeyHandler = function (input, listener) {
+  var graph =  this.editorUi.activeGraph;
+  if (graph == null) {
+       graph = this.editorUi.editor.graph;
+  }
   m.mxEvent.addListener(
     input,
     "keydown",
     m.mxUtils.bind(this, function (e) {
       if (e.keyCode == 13) {
-        this.editorUi.editor.graph.container.focus();
+        //this.editorUi.editor.graph.container.focus();
+        graph.container.focus();
         m.mxEvent.consume(e);
       } else if (e.keyCode == 27) {
         if (listener != null) {
           listener(null, null, true);
         }
 
-        this.editorUi.editor.graph.container.focus();
+        //this.editorUi.editor.graph.container.focus();
+        graph.container.focus();
         m.mxEvent.consume(e);
       }
     }),
@@ -1677,7 +1683,11 @@ export class ArrangePanel extends BaseFormatPanel {
  * Adds the label menu items to the given menu and parent.
  */
 ArrangePanel.prototype.init = function () {
-  var graph = this.editorUi.editor.graph;
+  //var graph = this.editorUi.editor.graph;
+  var graph =  this.editorUi.activeGraph;
+  if (graph == null) {
+       graph = this.editorUi.editor.graph;
+  }
   var ss = this.format.getSelectionState();
 
   this.container.appendChild(this.addLayerOps(this.createPanel()));
@@ -2342,7 +2352,12 @@ ArrangePanel.prototype.addAngle = function (div) {
 };
 
 BaseFormatPanel.prototype.getUnit = function () {
-  var unit = this.editorUi.editor.graph.view.unit;
+  var graph =  this.editorUi.activeGraph;
+  if (graph == null) {
+       graph = this.editorUi.editor.graph;
+  }
+  //var unit = this.editorUi.editor.graph.view.unit;
+  var unit = graph.view.unit;
 
   switch (unit) {
     case m.mxConstants.POINTS:
@@ -2355,11 +2370,21 @@ BaseFormatPanel.prototype.getUnit = function () {
 };
 
 BaseFormatPanel.prototype.inUnit = function (pixels) {
-  return this.editorUi.editor.graph.view.formatUnitText(pixels);
+  var graph =  this.editorUi.activeGraph;
+  if (graph == null) {
+       graph = this.editorUi.editor.graph;
+  }
+  //return this.editorUi.editor.graph.view.formatUnitText(pixels);
+  return graph.view.formatUnitText(pixels);
 };
 
 BaseFormatPanel.prototype.fromUnit = function (value) {
-  var unit = this.editorUi.editor.graph.view.unit;
+  var graph =  this.editorUi.activeGraph;
+  if (graph == null) {
+       graph = this.editorUi.editor.graph;
+  }
+  //var unit = this.editorUi.editor.graph.view.unit;
+  var unit = graph.view.unit;
 
   switch (unit) {
     case m.mxConstants.POINTS:
@@ -2372,11 +2397,21 @@ BaseFormatPanel.prototype.fromUnit = function (value) {
 };
 
 BaseFormatPanel.prototype.isFloatUnit = function () {
-  return this.editorUi.editor.graph.view.unit != m.mxConstants.POINTS;
+  var graph =  this.editorUi.activeGraph;
+  if (graph == null) {
+       graph = this.editorUi.editor.graph;
+  }
+  //return this.editorUi.editor.graph.view.unit != m.mxConstants.POINTS;
+  return graph.view.unit != m.mxConstants.POINTS;
 };
 
 BaseFormatPanel.prototype.getUnitStep = function () {
-  var unit = this.editorUi.editor.graph.view.unit;
+  var graph =  this.editorUi.activeGraph;
+  if (graph == null) {
+       graph = this.editorUi.editor.graph;
+  }
+  //var unit = this.editorUi.editor.graph.view.unit;
+  var unit = graph.view.unit;
 
   switch (unit) {
     case m.mxConstants.POINTS:

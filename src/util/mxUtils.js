@@ -869,7 +869,7 @@ export class mxUtils {
 
     return clone;
   }
-/*
+  /*
   static clone(obj, transients, shallow) {
     shallow = shallow != null ? shallow : false;
     var clone = null;

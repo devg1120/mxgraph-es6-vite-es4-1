@@ -136,7 +136,6 @@ export class mxCodec {
     var obj = null;
 
     if (node != null && node.nodeType == mxConstants.NODETYPE_ELEMENT) {
-
       //var ctor = null;
       //try {
       //  ctor = window[node.nodeName];

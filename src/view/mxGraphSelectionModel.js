@@ -129,7 +129,6 @@ export class mxGraphSelectionModel extends mxEventSource {
   }
 
   changeSelection(added, removed) {
-
     if (
       (added != null && added.length > 0 && added[0] != null) ||
       (removed != null && removed.length > 0 && removed[0] != null)

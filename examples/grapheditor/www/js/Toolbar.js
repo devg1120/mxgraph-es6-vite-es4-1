@@ -485,7 +485,12 @@ Toolbar.prototype.addTableDropDown = function () {
     m.mxResources.get("table"),
     false,
     m.mxUtils.bind(this, function (menu) {
-      var graph = this.editorUi.editor.graph;
+      //var graph = this.editorUi.editor.graph;
+      var graph =  this.editorUi.activeGraph;  
+      if (graph == null) {
+           graph = this.editorUi.editor.graph;
+      }
+
       var cell = graph.getSelectionCell();
 
       if (
@@ -696,7 +701,11 @@ Toolbar.prototype.setFontSize = function (value) {
  * Hides the current menu.
  */
 Toolbar.prototype.createTextToolbar = function () {
-  var graph = this.editorUi.editor.graph;
+  //var graph = this.editorUi.editor.graph;
+      var graph =  this.editorUi.activeGraph;  
+      if (graph == null) {
+           graph = this.editorUi.editor.graph;
+      }
 
   var styleElt = this.addMenu(
     "",
@@ -1594,7 +1603,11 @@ Toolbar.prototype.createLabel = function (label, tooltip) {
  */
 Toolbar.prototype.addMenuHandler = function (elt, showLabels, funct, showAll) {
   if (funct != null) {
-    var graph = this.editorUi.editor.graph;
+    //var graph = this.editorUi.editor.graph;
+      var graph =  this.editorUi.activeGraph;  
+      if (graph == null) {
+           graph = this.editorUi.editor.graph;
+      }
     var menu = null;
     var show = true;
 

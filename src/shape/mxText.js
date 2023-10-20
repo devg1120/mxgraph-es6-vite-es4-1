@@ -124,8 +124,8 @@ export class mxText extends mxShape {
         this.dialect == mxConstants.DIALECT_STRICTHTML;
       var fmt = realHtml || c instanceof mxVmlCanvas2D ? "html" : "";
 
-	  realHtml = true;  /* GS-PD*/
-	  fmt = 'html';  /* GS-PD*/
+      realHtml = true; /* GS-PD*/
+      fmt = "html"; /* GS-PD*/
 
       var val = this.value;
 

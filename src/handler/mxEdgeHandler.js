@@ -24,19 +24,19 @@ export class mxEdgeHandler {
   cloneEnabled = true;
   addEnabled = false;
   removeEnabled = false;
-static  dblClickRemoveEnabled = false;
-static  mergeRemoveEnabled = false;
-static  straightRemoveEnabled = false;
-static  virtualBendsEnabled = false;
-static  virtualBendOpacity = 20;
-static  parentHighlightEnabled = false;
+  static dblClickRemoveEnabled = false;
+  static mergeRemoveEnabled = false;
+  static straightRemoveEnabled = false;
+  static virtualBendsEnabled = false;
+  static virtualBendOpacity = 20;
+  static parentHighlightEnabled = false;
   preferHtml = false;
   allowHandleBoundsCheck = true;
-static  snapToTerminals = false;
+  static snapToTerminals = false;
   handleImage = null;
-static  tolerance = 0;
-static  outlineConnect = false;
-static  manageLabelHandle = false;
+  static tolerance = 0;
+  static outlineConnect = false;
+  static manageLabelHandle = false;
 
   constructor(state) {
     if (state != null) {

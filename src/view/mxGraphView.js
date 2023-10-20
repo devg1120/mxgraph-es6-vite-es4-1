@@ -1651,7 +1651,7 @@ export class mxGraphView extends mxEventSource {
 
       graph.addMouseListener({
         mouseDown: function (sender, me) {
-	//	console.log("mxGraphView mouseDown");
+          //	console.log("mxGraphView mouseDown");
           graph.popupMenuHandler.hideMenu();
         },
         mouseMove: function () {},

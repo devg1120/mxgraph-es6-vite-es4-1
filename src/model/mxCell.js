@@ -281,17 +281,16 @@ export class mxCell {
   }
 
   clone() {
-	  
     var clone = mxUtils.clone(this, this.mxTransient);
     clone.setValue(this.cloneValue());
     return clone;
 
-/*
+    /*
         let  clone = Object.assign(Object.create(Object.getPrototypeOf(this)), this);
 	//  clone.geometry = new mxGeometry(0,0,100,100);
         return clone;
 */
-	/*
+    /*
        let  value = Object.assign(Object.create(Object.getPrototypeOf(this.value)), this.value);
        let  geometry = Object.assign(Object.create(Object.getPrototypeOf(this.geometry)), this.geometry);
        let  style = Object.assign(Object.create(Object.getPrototypeOf(this.style)), this.style);

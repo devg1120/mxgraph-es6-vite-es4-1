@@ -80,7 +80,11 @@ Menus.prototype.defaultFonts = [
  * Adds the label menu items to the given menu and parent.
  */
 Menus.prototype.init = function () {
-  var graph = this.editorUi.editor.graph;
+  //var graph = this.editorUi.editor.graph;
+  var graph =  this.editorUi.activeGraph;
+  if (graph == null) {
+       graph = this.editorUi.editor.graph;
+  }
   var isGraphEnabled = m.mxUtils.bind(graph, graph.isEnabled);
 
   this.customFonts = [];
@@ -905,7 +909,11 @@ Menus.prototype.addMenu = function (name, popupMenu, parent) {
  * Adds a menu item to insert a table cell.
  */
 Menus.prototype.addInsertTableCellItem = function (menu, parent) {
-  var graph = this.editorUi.editor.graph;
+  //var graph = this.editorUi.editor.graph;
+  var graph =  this.editorUi.activeGraph;
+  if (graph == null) {
+       graph = this.editorUi.editor.graph;
+  }
 
   this.addInsertTableItem(
     menu,
@@ -944,7 +952,11 @@ Menus.prototype.addInsertTableItem = function (menu, insertFn, parent) {
     insertFn != null
       ? insertFn
       : m.mxUtils.bind(this, function (evt, rows, cols) {
-          var graph = this.editorUi.editor.graph;
+          //var graph = this.editorUi.editor.graph;
+         var graph =  this.editorUi.activeGraph;
+         if (graph == null) {
+              graph = this.editorUi.editor.graph;
+         }
           var td = graph.getParentByName(m.mxEvent.getSource(evt), "TD");
 
           if (td != null && graph.cellEditor.textarea != null) {
@@ -980,7 +992,11 @@ Menus.prototype.addInsertTableItem = function (menu, insertFn, parent) {
         });
 
   // KNOWN: Does not work in IE8 standards and quirks
-  var graph = this.editorUi.editor.graph;
+  //var graph = this.editorUi.editor.graph;
+  var graph =  this.editorUi.activeGraph;
+  if (graph == null) {
+       graph = this.editorUi.editor.graph;
+  }
   var row2 = null;
   var td = null;
 
@@ -1152,7 +1168,11 @@ Menus.prototype.edgeStyleChange = function (
     label,
     null,
     m.mxUtils.bind(this, function () {
-      var graph = this.editorUi.editor.graph;
+      //var graph = this.editorUi.editor.graph;
+  var graph =  this.editorUi.activeGraph;
+  if (graph == null) {
+       graph = this.editorUi.editor.graph;
+  }
       graph.stopEditing(false);
 
       graph.getModel().beginUpdate();
@@ -1222,7 +1242,11 @@ Menus.prototype.styleChange = function (
     label,
     null,
     m.mxUtils.bind(this, function () {
-      var graph = this.editorUi.editor.graph;
+      //var graph = this.editorUi.editor.graph;
+  var graph =  this.editorUi.activeGraph;
+  if (graph == null) {
+       graph = this.editorUi.editor.graph;
+  }
 
       if (fn != null && graph.cellEditor.isContentEditing()) {
         fn();
@@ -1240,7 +1264,11 @@ Menus.prototype.styleChange = function (
  */
 Menus.prototype.createStyleChangeFunction = function (keys, values) {
   return m.mxUtils.bind(this, function (post) {
-    var graph = this.editorUi.editor.graph;
+    //var graph = this.editorUi.editor.graph;
+  var graph =  this.editorUi.activeGraph;
+  if (graph == null) {
+       graph = this.editorUi.editor.graph;
+  }
     graph.stopEditing(false);
 
     graph.getModel().beginUpdate();
@@ -1307,7 +1335,11 @@ Menus.prototype.promptChange = function (
     label,
     null,
     m.mxUtils.bind(this, function () {
-      var graph = this.editorUi.editor.graph;
+      //var graph = this.editorUi.editor.graph;
+  var graph =  this.editorUi.activeGraph;
+  if (graph == null) {
+       graph = this.editorUi.editor.graph;
+  }
       var value = defaultValue;
       var state = graph.getView().getState(graph.getSelectionCell());
 
@@ -1349,7 +1381,11 @@ Menus.prototype.promptChange = function (
  * Adds a handler for showing a menu in the given element.
  */
 Menus.prototype.pickColor = function (key, cmd, defaultValue) {
-  var graph = this.editorUi.editor.graph;
+  //var graph = this.editorUi.editor.graph;
+  var graph =  this.editorUi.activeGraph;
+  if (graph == null) {
+       graph = this.editorUi.editor.graph;
+  }
   var h =
     226 +
     (Math.ceil(ColorDialog.prototype.presetColors.length / 12) +
@@ -1407,7 +1443,11 @@ Menus.prototype.pickColor = function (key, cmd, defaultValue) {
  * Adds a handler for showing a menu in the given element.
  */
 Menus.prototype.toggleStyle = function (key, defaultValue) {
-  var graph = this.editorUi.editor.graph;
+  //var graph = this.editorUi.editor.graph;
+  var graph =  this.editorUi.activeGraph;
+  if (graph == null) {
+       graph = this.editorUi.editor.graph;
+  }
   var value = graph.toggleCellStyles(key, defaultValue);
   this.editorUi.fireEvent(
     new m.mxEventObject(
@@ -1575,7 +1615,11 @@ Menus.prototype.addPopupMenuArrangeItems = function (menu, cell, evt) {
     this.addMenuItems(menu, ["-", "ungroup"], null, evt);
   }
 */
-  var graph = this.editorUi.activeGraph;
+  //var graph = this.editorUi.activeGraph;
+  var graph =  this.editorUi.activeGraph;
+  if (graph == null) {
+       graph = this.editorUi.editor.graph;
+  }
 
   if (!graph.isSelectionEmpty() ) {
     this.addMenuItems(menu, ["-", "toFront", "toBack"], null, evt);
@@ -1598,7 +1642,11 @@ Menus.prototype.addPopupMenuArrangeItems = function (menu, cell, evt) {
  * Creates the keyboard event handler for the current graph and history.
  */
 Menus.prototype.addPopupMenuCellItems = function (menu, cell, evt) {
-  var graph = this.editorUi.editor.graph;
+  //var graph = this.editorUi.editor.graph;
+  var graph =  this.editorUi.activeGraph;
+  if (graph == null) {
+       graph = this.editorUi.editor.graph;
+  }
   cell = graph.getSelectionCell();
   var state = graph.view.getState(cell);
   menu.addSeparator();
@@ -1694,7 +1742,12 @@ Menus.prototype.addPopupMenuCellItems = function (menu, cell, evt) {
  * Creates the keyboard event handler for the current graph and history.
  */
 Menus.prototype.addPopupMenuSelectionItems = function (menu, cell, evt) {
-  if (this.editorUi.editor.graph.isSelectionEmpty()) {
+  var graph =  this.editorUi.activeGraph;
+  if (graph == null) {
+       graph = this.editorUi.editor.graph;
+  }
+  //if (this.editorUi.editor.graph.isSelectionEmpty()) {
+  if (graph.isSelectionEmpty()) {
     this.addMenuItems(
       menu,
       ["-", "selectVertices", "selectEdges", "selectAll"],
@@ -1797,7 +1850,12 @@ Menubar.prototype.addMenuHandler = function (elt, funct) {
 
     var clickHandler = m.mxUtils.bind(this, function (evt) {
       if ((show && elt.enabled == null) || elt.enabled) {
-        this.editorUi.editor.graph.popupMenuHandler.hideMenu();
+  var graph =  this.editorUi.activeGraph;
+  if (graph == null) {
+       graph = this.editorUi.editor.graph;
+  }
+        //this.editorUi.editor.graph.popupMenuHandler.hideMenu();
+        graph.popupMenuHandler.hideMenu();
         var menu = new m.mxPopupMenu(funct);
         menu.div.className += " geMenubarMenu";
         menu.smartSeparators = true;

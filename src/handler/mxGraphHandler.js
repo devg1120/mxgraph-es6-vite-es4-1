@@ -15,15 +15,15 @@ export class mxGraphHandler {
   highlightEnabled = true;
   cloneEnabled = true;
   moveEnabled = true;
-static  guidesEnabled = false;
-static  handlesVisible = true;
+  static guidesEnabled = false;
+  static handlesVisible = true;
   guide = null;
   currentDx = null;
   currentDy = null;
   updateCursor = true;
   selectEnabled = true;
-static  removeCellsFromParent = true;
-static  removeEmptyParents = false;
+  static removeCellsFromParent = true;
+  static removeEmptyParents = false;
   connectOnDrop = false;
   scrollOnMove = true;
   minimumSize = 6;
@@ -32,9 +32,8 @@ static  removeEmptyParents = false;
   shape = null;
   scaleGrid = false;
   rotationEnabled = true;
-static  maxLivePreview = 0;
+  static maxLivePreview = 0;
   allowLivePreview = mxClient.IS_SVG;
-
 
   constructor(graph) {
     this.graph = graph;
@@ -531,12 +530,11 @@ static  maxLivePreview = 0;
   }
 
   checkPreview() {
-
     if (this.livePreviewActive && this.cloning) {
       this.resetLivePreview();
       this.livePreviewActive = false;
     } else if (
-      this.maxLivePreview >= this.cellCount &&      
+      this.maxLivePreview >= this.cellCount &&
       !this.livePreviewActive &&
       this.allowLivePreview
     ) {
@@ -547,7 +545,6 @@ static  maxLivePreview = 0;
     } else if (!this.livePreviewUsed && this.shape == null) {
       this.shape = this.createPreviewShape(this.bounds);
     }
-
   }
 
   mouseMove(sender, me) {
@@ -561,7 +558,6 @@ static  maxLivePreview = 0;
       this.bounds != null &&
       !this.suspended
     ) {
-
       if (mxEvent.isMultiTouchEvent(me.getEvent())) {
         this.reset();
         return;
@@ -570,13 +566,11 @@ static  maxLivePreview = 0;
       var delta = this.getDelta(me);
       var tol = graph.tolerance;
 
-
-//console.log("livePreviewActive",this.livePreviewActive);     
-//console.log("livePreviewUsed",this.livePreviewUsed);     
-//console.log("allowLivePreview",this.allowLivePreview);     
-//console.log("maxLivePreview",this.maxLivePreview);     
-//console.log("cellCount",this.cellCount);     
-                
+      //console.log("livePreviewActive",this.livePreviewActive);
+      //console.log("livePreviewUsed",this.livePreviewUsed);
+      //console.log("allowLivePreview",this.allowLivePreview);
+      //console.log("maxLivePreview",this.maxLivePreview);
+      //console.log("cellCount",this.cellCount);
 
       if (
         this.shape != null ||
@@ -584,8 +578,7 @@ static  maxLivePreview = 0;
         Math.abs(delta.x) > tol ||
         Math.abs(delta.y) > tol
       ) {
-
-       //  ここで描画
+        //  ここで描画
         if (this.highlight == null) {
           this.highlight = new mxCellHighlight(
             this.graph,
@@ -680,11 +673,9 @@ static  maxLivePreview = 0;
           this.currentDy = delta.y;
           this.updatePreview();
         }
-
-	
       }
 
-      this.updateHint(me);  // 座標表示
+      this.updateHint(me); // 座標表示
       this.consumeMouseEvent(mxEvent.MOUSE_MOVE, me);
       mxEvent.consume(me.getEvent());
     } else if (
@@ -1049,21 +1040,20 @@ static  maxLivePreview = 0;
   reset() {
     if (this.livePreviewUsed) {
       this.resetLivePreview();
-      try{ /* GS */
-            this.setHandlesVisibleForCells(
-              this.graph.selectionCelltresHandler.getHandledSelectionCells(),
-              true,
-            );
-      }catch (e) {
-      
-      }
+      try {
+        /* GS */
+        this.setHandlesVisibleForCells(
+          this.graph.selectionCelltresHandler.getHandledSelectionCells(),
+          true,
+        );
+      } catch (e) {}
     }
 
     this.destroyShapes();
     this.removeHint();
     this.delayedSelection = false;
-    this.livePreviewActive = null;  
-    this.livePreviewUsed = null;    
+    this.livePreviewActive = null;
+    this.livePreviewUsed = null;
     this.cellWasClicked = false;
     this.suspended = null;
     this.currentDx = null;
@@ -1079,7 +1069,7 @@ static  maxLivePreview = 0;
     this.cell = null;
   }
 
-shouldRemoveCellsFromParent(parent, cells, evt) {
+  shouldRemoveCellsFromParent(parent, cells, evt) {
     if (this.graph.getModel().isVertex(parent)) {
       var pState = this.graph.getView().getState(parent);
 

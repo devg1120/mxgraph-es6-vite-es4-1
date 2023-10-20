@@ -16,15 +16,15 @@ export class mxVertexHandler {
   index = null;
   allowHandleBoundsCheck = true;
   handleImage = null;
-static  tolerance = 0;
-static  rotationEnabled = false;
-static  parentHighlightEnabled = false;
+  static tolerance = 0;
+  static rotationEnabled = false;
+  static parentHighlightEnabled = false;
   rotationRaster = true;
   rotationCursor = "crosshair";
-static  livePreview = false;
-static  manageSizers = false;
+  static livePreview = false;
+  static manageSizers = false;
   constrainGroupByChildren = false;
-static   rotationHandleVSpacing = -16;
+  static rotationHandleVSpacing = -16;
   horizontalOffset = 0;
   verticalOffset = 0;
 
@@ -49,7 +49,7 @@ static   rotationHandleVSpacing = -16;
   }
 
   init() {
-//	  console.trace("mxVertexHandler.js  init", this.state.view.graph.name);
+    //	  console.trace("mxVertexHandler.js  init", this.state.view.graph.name);
     this.graph = this.state.view.graph;
     this.selectionBounds = this.getSelectionBounds(this.state);
     this.bounds = new mxRectangle(
