@@ -671,7 +671,7 @@ html body .geBigStandardButton:active {
 
 
 
-/* GS   Format */
+/*
 .geSprite-actualsize { background-position: 0 0; }
 .geSprite-bold { background-position: 0 -46px; }
 .geSprite-bottom { background-position: 0 -92px; }
@@ -689,9 +689,9 @@ html body .geBigStandardButton:active {
 .geSprite-middle { background-position: 0 -552px; }
 .geSprite-print { background-position: 0 -598px; }
 .geSprite-right { background-position: 0 -689px; }
+*/
 
-
-
+/*
 .geSprite-noarrow { background-position: 0 -1334px; }
 .geSprite-endclassic { background-position: 0 -1380px; }
 .geSprite-endopen { background-position: 0 -1426px; }
@@ -704,10 +704,10 @@ html body .geBigStandardButton:active {
 .geSprite-endovaltrans { background-position: 0 -1748px; }
 .geSprite-enddiamondtrans { background-position: 0 -1794px; }
 .geSprite-endthindiamondtrans { background-position: 0 -1840px; }
+*/
 
 
-
-
+/*
 .geSprite-startclassic { background-position: 0 -1886px; }
 .geSprite-startopen { background-position: 0 -1932px; }
 .geSprite-startblock { background-position: 0 -1978px; }
@@ -723,12 +723,12 @@ html body .geBigStandardButton:active {
 .geSprite-orderedlist { background-position: 0 -2438px; }
 .geSprite-unorderedlist { background-position: 0 -2484px; }
 .geSprite-horizontalrule { background-position: 0 -2530px; }
+*/
 
 
 
 
-
-
+/*
 .geSprite-link { background-position: 0 -2576px; }  
 .geSprite-indent { background-position: 0 -2622px; }
 .geSprite-outdent { background-position: 0 -2668px; }
@@ -758,9 +758,9 @@ html body .geBigStandardButton:active {
 .geSprite-vertical { background-position: 0 -3830px; }
 .geSprite-plus { background-position: 0 -3922px; }
 .geSprite-rounded { background-position: 0 -3968px; }
+*/
 
-
-
+/*
 .geSprite-duplicate { background-position: 0 -4106px; }
 .geSprite-insert { background-position: 0 -4152px; }
 
@@ -803,7 +803,7 @@ html body .geBigStandardButton:active {
 .geSprite-endopenthin { background-position: 0 -5765px; }
 .geSprite-endopenasync { background-position: 0 -5811px; }
 
-
+*/
 
 
 
