@@ -1381,6 +1381,7 @@ Menus.prototype.promptChange = function (
  * Adds a handler for showing a menu in the given element.
  */
 Menus.prototype.pickColor = function (key, cmd, defaultValue) {
+
   //var graph = this.editorUi.editor.graph;
   var graph =  this.editorUi.activeGraph;
   if (graph == null) {
@@ -1446,8 +1447,10 @@ Menus.prototype.toggleStyle = function (key, defaultValue) {
   //var graph = this.editorUi.editor.graph;
   var graph =  this.editorUi.activeGraph;
   if (graph == null) {
+
        graph = this.editorUi.editor.graph;
   }
+
   var value = graph.toggleCellStyles(key, defaultValue);
   this.editorUi.fireEvent(
     new m.mxEventObject(

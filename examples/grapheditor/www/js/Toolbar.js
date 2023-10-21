@@ -139,6 +139,11 @@ Toolbar.prototype.init = function () {
         ")",
     );
   }
+  var graph =  this.editorUi.activeGraph;
+  if (graph == null) {
+       graph = this.editorUi.editor.graph;
+  }
+
 
   // Updates the label if the scale changes
   this.updateZoom = m.mxUtils.bind(this, function () {
@@ -154,7 +159,8 @@ Toolbar.prototype.init = function () {
     }
   });
 
-  this.editorUi.editor.graph.view.addListener(
+  //this.editorUi.editor.graph.view.addListener(
+  graph.view.addListener(
     m.mxEvent.EVENT_SCALE,
     this.updateZoom,
   );

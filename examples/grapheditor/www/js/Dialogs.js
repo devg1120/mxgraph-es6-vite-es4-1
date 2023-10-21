@@ -425,7 +425,11 @@ ColorDialog.prototype.defaultColors = [
  */
 ColorDialog.prototype.createApplyFunction = function () {
   return m.mxUtils.bind(this, function (color) {
-    var graph = this.editorUi.editor.graph;
+  //  var graph = this.editorUi.editor.graph;
+  var graph =  this.editorUi.activeGraph;        
+  if (graph == null) {                     
+       graph = this.editorUi.editor.graph;                         
+  }        
 
     graph.getModel().beginUpdate();
     try {

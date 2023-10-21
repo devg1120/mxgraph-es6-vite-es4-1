@@ -445,6 +445,7 @@ Format.prototype.refresh = function () {
   var graph = ui.editor.graph;
   var graph2 = ui.editor2.graph;  //GS
 
+
   var div = document.createElement("div");
   div.style.whiteSpace = "nowrap";
   div.style.color = "rgb(112, 112, 112)";
@@ -683,7 +684,17 @@ BaseFormatPanel.prototype.buttonBackgroundColor = "white";
  */
 BaseFormatPanel.prototype.getSelectionState = function () {
   //var graph = this.editorUi.editor.graph;
-  var graph = this.editorUi.activeGraph;  // GS
+  //var graph = this.editorUi.activeGraph;  // GS
+	//
+
+  var graph =  this.editorUi.activeGraph;
+  //if (graph == null) {
+  //     graph = this.editorUi.editor.graph;
+  //}
+
+
+
+
   var cells = graph.getSelectionCells();
   var shape = null;
 
