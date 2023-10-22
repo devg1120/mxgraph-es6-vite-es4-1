@@ -19,6 +19,7 @@ export class Toolbar {
     this.pan_bottun = null;
     this.vsplit_bottun = null;
     this.hsplit_bottun = null;
+    this.splitfull_bottun = null;
 
     this.staticElements = [];
     this.init();
@@ -202,7 +203,7 @@ Toolbar.prototype.init = function () {
    this.pan_bottun = selp[2];
 
 //------------------------------------------------ GS
-  var split = this.addItems(["-", "vsplit", "hsplit"]);
+  var split = this.addItems(["-", "vsplit", "hsplit", "splitfull"]);
   split[1].setAttribute(
     "title",
     m.mxResources.get("vsplit") +
@@ -217,9 +218,17 @@ Toolbar.prototype.init = function () {
       this.editorUi.actions.get("hsplit").shortcut +
       ")",
   );
+  split[3].setAttribute(
+    "title",
+    m.mxResources.get("split_full") +
+      " (" +
+      this.editorUi.actions.get("splitfull").shortcut +
+      ")",
+  );
 
    this.vsplit_bottun = split[1];
    this.hsplit_bottun = split[2];
+   this.splitfull_bottun = split[5];
 
 //------------------------------------------------ 
   if (sw >= 320) {

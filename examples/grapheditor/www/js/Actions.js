@@ -205,6 +205,16 @@ Actions.prototype.init = function () {
     "sprite-hsplit",
     "horizontal split",
   );
+  this.addAction(
+    "splitfull",
+    function () {
+      ui.diagram_splitfull();
+    },
+    null,
+    "sprite-split_full",
+    "split full",
+  );
+
  //
   this.addAction(
     "cut",

@@ -1,0 +1,18 @@
+<svg width="20" height="20" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill="#000000" version="1.1">
+
+ <g id="SVGRepo_iconCarrier">
+  <title>split-vertically</title>
+  <g fill-rule="evenodd" fill="none" id="Page-1">
+   <g fill="#000000" id="audio-description1">
+    <path id="Combined-Shape" d="m448,64l0,384l-384,0l0,-384l384,0zm-341.33333,42.66667l0,298.66666l128,0l0,-298.66666l-128,0zm170.66666,298.66666l128,0l0,-298.66666l-128,0l0,298.66666z"/>
+   </g>
+  </g>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <g stroke-width="0" id="SVGRepo_bgCarrier"/>
+  <g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"/>
+  <path id="svg_1" d="m225,134" opacity="NaN" stroke="#000" fill="#fff"/>
+  <rect stroke="#000" id="svg_4" height="299" width="298.99998" y="107" x="108.00001" fill="#fff"/>
+ </g>
+</svg>
