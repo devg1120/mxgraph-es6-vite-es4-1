@@ -1062,6 +1062,7 @@ export class EditorUi extends m.mxEventSource {
     if (!graph.standalone) {
       this.open();
     }
+  this.diagram_splitfull();   // GS
   } // end constructor
 
 /*****************************************************************/
@@ -4927,6 +4928,7 @@ EditorUi.prototype.createDivs = function () {
   } else {
     this.diagramContainer.style.border = "none";
   }
+  
 };
 
 /**
@@ -5185,8 +5187,8 @@ EditorUi.prototype.createSplitDiv = function (classname) {
 
   sp1.style.width = "100%";
   sp2.style.width = "100%";
-  sp1.style.height = "50%";
-  sp2.style.height = "50%";
+  sp1.style.height = "100%";
+  sp2.style.height = "100%";
 
   return elt;
 };
@@ -6415,8 +6417,8 @@ EditorUi.prototype.diagram_hsplit = function () {
   ele.children[2].style.height = "50%";
   var child1 = ele.children[0];
   var child2 = ele.children[2];
-  child2.scrollTop = child1.scrollTop;
-  child2.scrollLeft = child1.scrollLeft;
+  //child2.scrollTop = child1.scrollTop;
+  //child2.scrollLeft = child1.scrollLeft;
 
 };
 
@@ -6435,8 +6437,6 @@ EditorUi.prototype.diagram_splitfull = function () {
   ele.children[0].style.height= "100%";
   ele.children[2].style.height = "0%";
   
-  //ele.children[0].className = ele.children[0].className.replace("horizontal", "vertical");
-  //ele.children[2].className = ele.children[2].className.replace("horizontal", "vertical");
 };
 
 /**
