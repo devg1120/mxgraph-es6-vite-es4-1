@@ -4886,8 +4886,8 @@ EditorUi.prototype.createDivs = function () {
   this.sidebarContainer = this.createDiv("geSidebarContainer");
   this.formatContainer = this.createDiv("geSidebarContainer geFormatContainer");
   //this.diagramContainer = this.createDiv("geDiagramContainer");                     //  GS
-  //this.diagramContainer = this.createSplitDiv("geDiagramContainer");                  //  GS
-  this.diagramContainer = this.createSplitDiv2("geDiagramContainer");                  //  GS
+  this.diagramContainer = this.createSplitDiv("geDiagramContainer");                  //  GS
+  //this.diagramContainer = this.createSplitDiv2("geDiagramContainer");                  //  GS
   this.footerContainer = this.createDiv("geFooterContainer");
   this.hsplit = this.createDiv("geHsplit");
   this.hsplit.setAttribute("title", m.mxResources.get("collapseExpand"));
@@ -5161,13 +5161,14 @@ EditorUi.prototype.createSplitDiv = function (classname) {
   var elt = document.createElement("div");
   elt.id = "split-view";
   elt.className = classname + " split-view vertical";
+  //elt.className = classname + " split-view horizontal";
   var sp1 = document.createElement("div");
   sp1.className = "split1";
   sp1.id = "split1";
   var sp2 = document.createElement("div");
   sp2.className = "split2";
   sp2.id = "split2";
-  sp2.style.height = "300px";
+  //sp2.style.height = "300px";
   var gutter = document.createElement("div");
   gutter.className = "gutter";
   elt.appendChild(sp1);
@@ -5192,7 +5193,7 @@ EditorUi.prototype.createSplitDiv2 = function (classname) {
   var sp2 = document.createElement("div");
   sp2.className = "split2";
   sp2.id = "split2";
-  sp2.style.height = "300px";
+  //sp2.style.height = "300px";
   var gutter = document.createElement("div");
   gutter.className = "gutter";
   elt.appendChild(sp1);
@@ -6370,10 +6371,14 @@ EditorUi.prototype.diagram_vsplit = function () {
   ele.className = new_className;
 	//ele.children[0].style.height = "100%";
 	//ele.children[2].style.height = "100%";
-  ele.children[0].style.width= "0%";
-  ele.children[2].style.width = "0%";
+  ele.children[0].style.width= "50%";
+  ele.children[2].style.width = "50%";
   ele.children[0].style.height= "100%";
   ele.children[2].style.height = "100%";
+  var child1 = ele.children[0];
+  var child2 = ele.children[2];
+  child2.scrollTop = child1.scrollTop;
+  child2.scrollLeft = child1.scrollLeft;
 };
 
 EditorUi.prototype.diagram_hsplit = function () {
@@ -6398,8 +6403,12 @@ EditorUi.prototype.diagram_hsplit = function () {
 	//ele.children[2].style.width = "100%";
   ele.children[0].style.width= "100%";
   ele.children[2].style.width = "100%";
-  ele.children[0].style.height= "0%";
-  ele.children[2].style.height = "0%";
+  ele.children[0].style.height= "50%";
+  ele.children[2].style.height = "50%";
+  var child1 = ele.children[0];
+  var child2 = ele.children[2];
+  child2.scrollTop = child1.scrollTop;
+  child2.scrollLeft = child1.scrollLeft;
 
 };
 
@@ -6409,7 +6418,8 @@ EditorUi.prototype.diagram_splitfull = function () {
   EditorUi.split_h = false;
   var ele = document.getElementById("split-view");
   var className = ele.className;
-  var new_className = className.replace("vertical", "horizontal");
+  //var new_className = className.replace("vertical", "horizontal");
+  var new_className = className.replace( "horizontal", "vertical");
   ele.className = new_className;
         
   ele.children[0].style.width= "100%";
