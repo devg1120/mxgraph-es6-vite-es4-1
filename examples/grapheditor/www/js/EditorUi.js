@@ -4308,7 +4308,15 @@ EditorUi.prototype.resetScrollbars_imp = function (graph) {
  * Loads the stylesheet for this graph.
  */
 EditorUi.prototype.setPageVisible = function (value) {
-  var graph = this.editor.graph;
+   console.log("EditorUi.prototype.setPageVisible");
+   var graph = this.editor.graph;
+   this.setPageVisible2(graph, value);
+   var graph = this.editor2.graph;
+   this.setPageVisible2(graph, value);
+}
+
+EditorUi.prototype.setPageVisible2 = function (graph,value) {
+  //var graph = this.editor.graph;
   var hasScrollbars = m.mxUtils.hasScrollbars(graph.container);
   var tx = 0;
   var ty = 0;
