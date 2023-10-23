@@ -2239,11 +2239,15 @@ EditorUi.prototype.showShapePicker = function (
   callback,
   direction,
 ) {
+
   var cells = this.getCellsForShapePicker(source);
 
   if (cells != null && cells.length > 0) {
     var ui = this;
-    var graph = this.editor.graph;
+    //var graph = this.editor.graph;
+    var graph = this.activeGraph;
+
+
     var div = document.createElement("div");
     var sourceState = graph.view.getState(source);
     var style =
@@ -4309,7 +4313,6 @@ EditorUi.prototype.resetScrollbars_imp = function (graph) {
  * Loads the stylesheet for this graph.
  */
 EditorUi.prototype.setPageVisible = function (value) {
-   console.log("EditorUi.prototype.setPageVisible");
    var graph = this.editor.graph;
    this.setPageVisible2(graph, value);
    var graph = this.editor2.graph;
@@ -4528,8 +4531,15 @@ EditorUi.prototype.setPageScale = function (value) {
  * Loads the stylesheet for this graph.
  */
 EditorUi.prototype.setGridColor = function (value) {
-  this.editor.graph.view.gridColor = value;
-  this.editor.graph.view.validateBackground();
+  //this.editor.graph.view.gridColor = value;
+  //this.editor.graph.view.validateBackground();
+  var graph = this.activeGraph;
+  if (graph == null) {
+      graph = this.editor.graph;
+  }
+  graph.view.gridColor = value;
+  graph.view.validateBackground();
+
   this.fireEvent(new m.mxEventObject("gridColorChanged"));
 };
 
@@ -5015,7 +5025,6 @@ EditorUi.prototype.createUi = function () {
   let lightbox = this.editor.graph.lightbox;
   var con = document.getElementById("split2");    // GS
   this.editor2 = new Editor(                      // GS
-//	  this,
     this.editor.chromeless,
     themes,
     model,
@@ -6101,7 +6110,6 @@ EditorUi.prototype.createKeyHandler = function (editor) {
   var keyHandlerGetFunction = keyHandler.getFunction;
 
   m.mxKeyHandler.prototype.getFunction = function (evt) {
-	  console.log("m.mxKeyHandler.prototype.getFunction",evt);
     if (graph.isEnabled()) {
       // TODO: Add alt modified state in core API, here are some specific cases
       if (m.mxEvent.isShiftDown(evt) && m.mxEvent.isAltDown(evt)) {
@@ -6362,7 +6370,6 @@ EditorUi.prototype.pan = function () {
 };
 
 EditorUi.prototype.diagram_vsplit = function () {
-	console.log("diagram_vsplit");
   /* GS */
 	/*
       var ele = document.getElementById("split-view");   // GS
@@ -6392,7 +6399,6 @@ EditorUi.prototype.diagram_vsplit = function () {
 };
 
 EditorUi.prototype.diagram_hsplit = function () {
-	console.log("diagram_hsplit");
   /* GS */
 	/*
       var ele = document.getElementById("split-view");   // GS

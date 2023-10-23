@@ -2591,8 +2591,8 @@ FilenameDialog.createFileTypes = function (editorUi, nameInput, types) {
         event.stopPropagation();
       } else {
 
-	    //console.log("mousedown", this.graph.name, that.ui);
-	    //this.ui.set_activeGraph(this.graph);
+	    console.log("mousedown", this.graph.name);
+	    this.graph.ui.set_activeGraph(this.graph);
 	    // this.graph.mouse_down();
 
       }

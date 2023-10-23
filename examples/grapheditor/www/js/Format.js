@@ -127,6 +127,14 @@ Format.prototype.init = function () {
   this.refresh();
 };
 
+Format.prototype.graph = function () {
+   var graph =  this.editorUi.activeGraph;
+   if (graph == null) {
+        graph = this.editorUi.editor.graph;
+   }  
+   return graph;
+}
+
 /**
  * Returns information about the current selection.
  */
@@ -8391,13 +8399,13 @@ DiagramFormatPanel.prototype.addGridOption = function (container) {
       this.createOption(
         m.mxResources.get("grid"),
         function () {
-          return graph.isGridEnabled();
+          return this.graph().isGridEnabled();
         },
         function (checked) {
-          graph.setGridEnabled(checked);
+          this.graph().setGridEnabled(checked);
 
           if (graph.isGridEnabled()) {
-            graph.view.gridColor = "#e0e0e0";
+            this.graph().view.gridColor = "#e0e0e0";
           }
 
           ui.fireEvent(new m.mxEventObject("gridEnabledChanged"));
@@ -8405,10 +8413,10 @@ DiagramFormatPanel.prototype.addGridOption = function (container) {
         {
           install: function (apply) {
             this.listener = function () {
-              input.style.display = graph.isGridEnabled() ? "" : "none";
+              input.style.display = this.graph().isGridEnabled() ? "" : "none";
               stepper.style.display = input.style.display;
 
-              apply(graph.isGridEnabled());
+              apply(this.graph().isGridEnabled());
             };
 
             ui.addListener("gridEnabledChanged", this.listener);
