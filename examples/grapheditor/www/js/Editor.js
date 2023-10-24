@@ -2591,7 +2591,9 @@ FilenameDialog.createFileTypes = function (editorUi, nameInput, types) {
         event.stopPropagation();
       } else {
 
-	    console.log("mousedown", this.graph.name);
+	    console.log("mousedown", this.graph.name ,  graph.container.className);
+	    //graph.view.className =  graph.view.className + " canvas_focus";
+
 	    this.graph.ui.set_activeGraph(this.graph);
 	    // this.graph.mouse_down();
 

@@ -446,6 +446,8 @@ export class EditorUi extends m.mxEventSource {
         }
 
         if (evtName == m.mxEvent.MOUSE_DOWN) {
+            //console.log("m.mxEvent.MOUSE_DOWN");
+
           this.container.focus();
         }
         graphFireMouseEvent.apply(this, arguments);
@@ -1068,7 +1070,14 @@ export class EditorUi extends m.mxEventSource {
 /*****************************************************************/
 
 set_activeGraph(graph) {
+ if (this.activeGraph  != null) {
+        this.activeGraph.container.className = 
+               this.activeGraph.container.className.replace(" graph_focus" , "");
+  }
+
   this.activeGraph = graph;
+  this.activeGraph.container.className = 
+           this.activeGraph.container.className + " graph_focus" 
 
 }
 

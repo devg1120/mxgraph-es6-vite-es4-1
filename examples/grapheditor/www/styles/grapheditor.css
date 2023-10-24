@@ -62,6 +62,20 @@
 	font-size:0px;
 	outline:none;
 }
+
+.geDiagramContainer .graph_focus{
+  /* border: 5px solid red; */
+  /* border-top: 5px solid #1e90ff; */
+   border-top: 4px solid #1e90ff; 
+   border-left: 5px solid #1e90ff; 
+   border-right: 4px solid #1e90ff; 
+   border-bottom: 4px solid #1e90ff; 
+   box-sizing: border-box;
+
+  /*background-color: #bbff00;*/
+
+}
+
 .geMenubar, .geToolbar {
 	white-space:nowrap;
 	display:block;
